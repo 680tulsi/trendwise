@@ -1,12 +1,13 @@
-import { NextResponse } from "next/server";
-import connectDB from "@/lib/mongodb";
+import { connectDB } from "@/lib/mongodb";
 import { Article } from "@/models/Article";
+import { NextResponse } from "next/server";
 
 export async function GET() {
   await connectDB();
-  const articles = await Article.find().select("title excerpt slug").lean();
+  const articles = await Article.find().sort({ createdAt: -1 }).lean();
   return NextResponse.json(articles);
 }
+
 
 export async function POST(req) {
   await connectDB();

@@ -4,8 +4,21 @@ import AIButton from "@/components/AIButton";
 
 export default async function Dashboard() {
   const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-  const res = await fetch(`${baseURL}/api/articles`, { cache: "no-store" });
-  const articles = await res.json();
+
+  let articles = [];
+  
+  try {
+    const res = await fetch(`${baseURL}/api/articles`, { cache: "no-store" });
+    
+    if (!res.ok) {
+      console.error("Failed to fetch articles. Status:", res.status);
+    } else {
+      articles = await res.json();
+    }
+    
+  } catch (error) {
+    console.error("Error fetching articles:", error);
+  }
 
   return (
     <div className="min-h-screen bg-gray-950 text-white">

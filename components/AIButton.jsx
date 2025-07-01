@@ -11,7 +11,7 @@ export default function AIButton() {
         onClick={async () => {
           const topic = prompt("Enter article topic:");
           if (topic) {
-            const res = await fetch("/api/generate-content", {
+            const res = await fetch("/api/generate--content", {   // double hyphen same जैसा route रखा है
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ topic }),

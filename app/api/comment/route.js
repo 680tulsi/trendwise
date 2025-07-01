@@ -2,8 +2,6 @@ import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { Comment } from "@/models/comment";
 
-
-
 export async function GET(req) {
   await connectDB();
 
@@ -21,7 +19,8 @@ export async function GET(req) {
 export async function POST(req) {
   await connectDB();
 
-  const { slug, name, comment } = await req.json();
+  const body = await req.json();
+  const { slug, name, comment } = body;
 
   if (!slug || !name || !comment) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
