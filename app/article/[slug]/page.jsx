@@ -1,5 +1,7 @@
+
 import Navbar from "@/components/Navbar";
 import CommentsSection from "@/components/CommentsSection";
+import Image from "next/image";
 
 export default async function ArticlePage({ params }) {
   const { slug } = params;
@@ -8,7 +10,7 @@ export default async function ArticlePage({ params }) {
     cache: "no-store",
   });
 
-  if (res.status !== 200) {
+  if (!res.ok) {
     return (
       <div className="min-h-screen flex items-center justify-center text-white">
         <h1 className="text-3xl font-bold">404 | Article Not Found</h1>
@@ -24,9 +26,17 @@ export default async function ArticlePage({ params }) {
       <main className="max-w-4xl mx-auto p-6 space-y-6">
         <h1 className="text-4xl font-extrabold mb-4 text-green-400">{article.title}</h1>
 
-        {article.media?.map((url, index) => (
-          <img key={index} src={url} alt="Article" className="w-full rounded-lg shadow-lg mb-6" />
-        ))}
+        {article.media?.length > 0 &&
+          article.media.map((url, index) => (
+            <Image
+              key={index}
+              src={url}
+              alt="Article Image"
+              width={800}
+              height={400}
+              className="w-full rounded-lg shadow-lg mb-6"
+            />
+          ))}
 
         <p className="text-lg leading-7 text-gray-300">{article.content}</p>
 
@@ -35,4 +45,3 @@ export default async function ArticlePage({ params }) {
     </div>
   );
 }
-

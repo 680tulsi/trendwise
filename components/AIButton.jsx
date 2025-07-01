@@ -25,7 +25,6 @@ export default function AIButton() {
         🤖 AI Generate
       </button>
 
-      {/* Yaha content render karo */}
       {aiContent && (
         <div
           className="mt-4 p-4 border border-purple-500 rounded text-white"

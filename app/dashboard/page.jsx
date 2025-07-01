@@ -1,20 +1,8 @@
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/lib/auth";
 import Navbar from "@/components/Navbar";
 import Link from "next/link";
 import AIButton from "@/components/AIButton";
 
 export default async function Dashboard() {
-  const session = await getServerSession(authOptions);
-
-  if (!session) {
-    return (
-      <div className="min-h-screen flex items-center justify-center text-white">
-        <h1 className="text-3xl font-bold">Unauthorized. Please Login.</h1>
-      </div>
-    );
-  }
-
   const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
   const res = await fetch(`${baseURL}/api/articles`, { cache: "no-store" });
   const articles = await res.json();
@@ -25,7 +13,7 @@ export default async function Dashboard() {
 
       <main className="max-w-6xl mx-auto py-10 px-4 space-y-8">
         <h1 className="text-4xl font-bold text-green-400 mb-4">
-          Welcome, {session.user.name} 👋
+          Welcome to TrendWise 👋
         </h1>
 
         <div className="flex justify-between items-center mb-6">
@@ -40,7 +28,6 @@ export default async function Dashboard() {
               🌐 View Public Site
             </Link>
 
-            {/* AI Generate Button as Client Component */}
             <AIButton />
           </div>
         </div>
@@ -55,7 +42,7 @@ export default async function Dashboard() {
                 key={article._id}
                 className="block bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 rounded-xl p-6 shadow-lg hover:shadow-2xl hover:scale-105 transform transition-all duration-300"
               >
-                <h3 className="text-xl font-bold text-white mb-2 group-hover:text-green-400">
+                <h3 className="text-xl font-bold text-white mb-2">
                   {article.title}
                 </h3>
                 <p className="text-gray-400">{article.excerpt}</p>

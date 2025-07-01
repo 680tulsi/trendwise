@@ -1,9 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
 
 export default function CommentsSection({ slug }) {
-  const { data: session } = useSession();
   const [comments, setComments] = useState([]);
   const [text, setText] = useState("");
 
@@ -15,7 +13,6 @@ export default function CommentsSection({ slug }) {
 
   const postComment = async (e) => {
     e.preventDefault();
-    if (!session) return alert("Login required");
     if (!text) return;
 
     const res = await fetch("/api/comment", {
@@ -23,7 +20,7 @@ export default function CommentsSection({ slug }) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         slug,
-        name: session.user.name,
+        name: "Guest User",
         comment: text,
       }),
     });
@@ -53,25 +50,21 @@ export default function CommentsSection({ slug }) {
         ))}
       </div>
 
-      {session ? (
-        <form onSubmit={postComment} className="space-y-4">
-          <textarea
-            className="w-full border border-gray-700 bg-gray-900 p-3 rounded text-white focus:ring-2 focus:ring-green-600 outline-none"
-            placeholder="Write your comment..."
-            rows={3}
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-          ></textarea>
-          <button
-            type="submit"
-            className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded w-full"
-          >
-            Post Comment
-          </button>
-        </form>
-      ) : (
-        <p className="mt-4 text-gray-400">⚠️ Login with Google to post a comment.</p>
-      )}
+      <form onSubmit={postComment} className="space-y-4">
+        <textarea
+          className="w-full border border-gray-700 bg-gray-900 p-3 rounded text-white focus:ring-2 focus:ring-green-600 outline-none"
+          placeholder="Write your comment..."
+          rows={3}
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+        ></textarea>
+        <button
+          type="submit"
+          className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded w-full"
+        >
+          Post Comment
+        </button>
+      </form>
     </div>
   );
 }
