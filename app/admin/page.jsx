@@ -1,29 +1,26 @@
 "use client";
 import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 export default function AdminPage() {
-  const { data: session, status } = useSession();
   const router = useRouter();
   const [articles, setArticles] = useState([]);
   const [title, setTitle] = useState("");
 
   useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push("/"); // Agar login nahi hai toh homepage pe bhejo
+    const isAdmin = true; // Temporary, बाद में Custom Auth लगाना है
+    if (!isAdmin) {
+      router.push("/");
     }
-  }, [status, router]);
+  }, [router]);
 
   useEffect(() => {
-    if (status === "authenticated") {
-      fetch("/api/articles")
-        .then((res) => res.json())
-        .then((data) => setArticles(data))
-        .catch((err) => console.error(err));
-    }
-  }, [status]);
+    fetch("/api/articles")
+      .then((res) => res.json())
+      .then((data) => setArticles(data))
+      .catch((err) => console.error(err));
+  }, []);
 
   const generateArticle = async () => {
     if (!title.trim()) return alert("Enter a topic first!");
@@ -38,19 +35,11 @@ export default function AdminPage() {
       alert("Article generated successfully!");
       setTitle("");
       const updated = await res.json();
-      setArticles((prev) => [...prev, updated]); 
+      setArticles((prev) => [...prev, updated]);
     } else {
       alert("Failed to generate article.");
     }
   };
-
-  if (status === "loading") {
-    return (
-      <div className="min-h-screen flex items-center justify-center text-white">
-        <h1 className="text-3xl font-bold">Checking Authentication...</h1>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
@@ -88,4 +77,3 @@ export default function AdminPage() {
     </div>
   );
 }
-

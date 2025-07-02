@@ -17,7 +17,6 @@ export default function Home() {
     };
     fetchData();
 
-    // Notification permission logic with popup
     if ("Notification" in window) {
       setTimeout(() => {
         if (Notification.permission === "default") {
@@ -28,7 +27,7 @@ export default function Home() {
             }
           });
         }
-      }, 1500); // 1.5 sec delay for better UX
+      }, 1500);
     }
   }, []);
 
@@ -52,10 +51,9 @@ export default function Home() {
         </p>
       </section>
 
-      {/* Main Content */}
       <main className="max-w-5xl mx-auto py-12 px-4 space-y-10">
         
-        {/* Search Bar */}
+       
         <div className="max-w-md mx-auto my-6">
           <input
             type="text"
@@ -82,12 +80,12 @@ export default function Home() {
 
       </main>
 
-      {/* AI Chat Box Floating */}
+    
       <div className="fixed bottom-6 right-6 z-50">
         <AIChatBox />
       </div>
 
-      {/* Footer */}
+   
       <footer className="mt-12 py-6 bg-gray-900 text-center text-gray-500">
         © 2025 TrendWise | Built with 💡 AI-Powered Content
       </footer>

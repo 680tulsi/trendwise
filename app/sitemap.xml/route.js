@@ -3,9 +3,7 @@ import { Article } from "@/models/Article";
 
 export async function GET() {
   await connectDB();
-
   const articles = await Article.find().select("slug").lean();
-
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
   const urls = articles.map((a) => `

@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic"; 
+
 import Navbar from "@/components/Navbar";
 import Link from "next/link";
 import AIButton from "@/components/AIButton";
